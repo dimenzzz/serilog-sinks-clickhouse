@@ -14,5 +14,5 @@ var log = new LoggerConfiguration()
           new AdditionalColumn { Name = "user", Type = "String" }
       },
       restrictedToMinimumLevel: LogEventLevel.Information
-  );
+  ).CreateLogger();
  ``` 
