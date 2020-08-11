@@ -1,4 +1,8 @@
 # serilog-sinks-clickhouse
+Default fields:
+1. timestamp (DateTime)
+2. level (Int)
+3. message (String)
 
 Usage:
 ```C#
