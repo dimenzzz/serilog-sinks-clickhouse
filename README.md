@@ -7,6 +7,8 @@ Default fields:
 Usage:
 ```C#
 var log = new LoggerConfiguration()
+  .Enrich.WithProperty("source", "network")
+  .Enrich.WithProperty("user", "admin")
   .WriteTo.ClickHouse(
       "Compress=False;CheckCompressedHash=False;Compressor=lz4;Host=localhost;Port=9000;Database=test_db;User=default;Password=",
       "test_db.logs",
@@ -56,5 +58,7 @@ var log = new LoggerConfiguration()
 
 var logFromAppsettings = new LoggerConfiguration()
   .ReadFrom.Configuration(configuration)
+  .Enrich.WithProperty("source", "network")
+  .Enrich.WithProperty("user", "admin")
   .CreateLogger();
  ```
