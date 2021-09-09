@@ -1,10 +1,14 @@
-# serilog-sinks-clickhouse
-Default fields:
+# Install:
+```
+dotnet add package Serilog.Sinks.ClickHouse --version 1.0.0
+```
+
+# Default fields:
 1. timestamp (DateTime)
 2. level (Int)
 3. message (String)
 
-Usage:
+# Usage:
 ```C#
 var log = new LoggerConfiguration()
   .Enrich.WithProperty("source", "network")
