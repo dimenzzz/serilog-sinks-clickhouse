@@ -7,6 +7,7 @@ dotnet add package Serilog.Sinks.ClickHouse --version 1.0.0
 1. timestamp (DateTime)
 2. level (Int)
 3. message (String)
+4. exception (String)
 
 # Usage:
 ```C#

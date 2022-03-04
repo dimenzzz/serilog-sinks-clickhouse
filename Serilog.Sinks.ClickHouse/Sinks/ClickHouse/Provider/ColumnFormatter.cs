@@ -20,6 +20,9 @@ namespace Serilog.Sinks.ClickHouse.Provider
         public LogEventLevel Level { get => _message.Level; }
         [Column(Name = "message", Type = "String")]
         public string Message { get => _message.RenderMessage(_formatProvider); }
+        [Column(Name = "exception", Type = "String")]
+        public string Exception { get => _message.Exception?.ToString(); }
+
         
         public ColumnFormatter(LogEvent message, IFormatProvider formatProvider = null, IEnumerable<AdditionalColumn> additionalColumns = null)
         {
