@@ -19,5 +19,9 @@
     <PackageReference Include="ClickHouse.Ado" Version="2.0.5" />
     <PackageReference Include="Serilog" Version="4.3.0" />
   </ItemGroup>
-
+	
+<ItemGroup>
+	<None Include="README.md" Pack="true" PackagePath="\"/>
+</ItemGroup>
+	
 </Project>
