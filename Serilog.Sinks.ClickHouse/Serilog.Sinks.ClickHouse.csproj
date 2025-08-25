@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0;netstandard2.1</TargetFrameworks>
+	<Version>1.0.1</Version>
     <Authors>dimenzzz</Authors>
     <Description>Write serilog events to clickhouse database.</Description>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -9,6 +10,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageTags>serilog, clickhouse</PackageTags>
     <PackageProjectUrl>https://github.com/dimenzzz/serilog-sinks-clickhouse</PackageProjectUrl>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
     <Copyright>Copyright © Dmitry Ivanov 2020</Copyright>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
