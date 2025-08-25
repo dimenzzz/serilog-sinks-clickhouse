@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Serilog.Core;
 using Serilog.Events;
-using Serilog.Sinks.PeriodicBatching;
-using Serilog.Sinks.ClickHouse.Provider;
 using Serilog.Debugging;
+using Serilog.Sinks.ClickHouse.Provider;
 
 namespace Serilog.Sinks.ClickHouse
 {
-    public class ClickHouseSink : PeriodicBatchingSink
+    public class ClickHouseSink : IBatchedLogEventSink
     {
         private readonly IFormatProvider _formatProvider;
         private readonly ClickHouseProvider<ColumnFormatter> _provider;
@@ -17,28 +18,27 @@ namespace Serilog.Sinks.ClickHouse
         public ClickHouseSink(
             string connectionString,
             string tableName,
-            int batchPostingLimit,
-            TimeSpan period,
             IEnumerable<AdditionalColumn> additionalColumns = null,
             IFormatProvider formatProvider = null,
-            bool autoCreateSqlTable = true) : 
-            base(batchPostingLimit, period)
+            bool autoCreateSqlTable = true)
         {
             _additionalColumns = additionalColumns;
             _formatProvider = formatProvider;
             _provider = new ClickHouseProvider<ColumnFormatter>(tableName, connectionString, additionalColumns, autoCreateSqlTable);
         }
 
-        protected override void EmitBatch(IEnumerable<LogEvent> events)
+        public async Task EmitBatchAsync(IReadOnlyCollection<LogEvent> events)
         {
             try
             {
-                _provider.Flush(events.Select(e => new ColumnFormatter(e, _formatProvider, _additionalColumns)));
+                await _provider.FlushAsync(events.Select(e => new ColumnFormatter(e, _formatProvider, _additionalColumns)));
             }
             catch (Exception ex)
             {
                 SelfLog.WriteLine("Unable to write {0} log events to the database due to following error: {1}", events.Count(), ex.Message);
             }
         }
+
+        public Task OnEmptyBatchAsync() => Task.CompletedTask;
     }
 }

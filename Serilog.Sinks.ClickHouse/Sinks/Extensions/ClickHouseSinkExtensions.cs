@@ -19,13 +19,19 @@ namespace Serilog.Sinks.ClickHouse.Extensions
             LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose)
         {
             var sink = new ClickHouseSink(
-                                connectionString,
-                                tableName,
-                                batchPostingLimit,
-                                period,
-                                additionalColumns,
-                                formatProvider);
-            return loggerConfiguration.Sink(sink, restrictedToMinimumLevel);
+                connectionString,
+                tableName,
+                additionalColumns,
+                formatProvider);
+
+            var batchingOptions = new BatchingOptions
+            {
+                BatchSizeLimit = batchPostingLimit,
+                BufferingTimeLimit = period,
+                QueueLimit = 100000
+            };
+
+            return loggerConfiguration.Sink(sink, batchingOptions, restrictedToMinimumLevel);
         }
     }
 }

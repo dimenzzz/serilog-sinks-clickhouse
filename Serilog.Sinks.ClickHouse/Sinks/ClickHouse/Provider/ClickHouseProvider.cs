@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using ClickHouse.Ado;
 using Serilog.Debugging;
 
@@ -40,12 +41,12 @@ namespace Serilog.Sinks.ClickHouse.Provider
             
         }
 
-        public void Flush(IEnumerable<TColumnFormatter> buff)
+        public async Task FlushAsync(IEnumerable<TColumnFormatter> buff)
         {
             if (buff.Any())
             {
                 using var connection = new ClickHouseConnection(new ClickHouseConnectionSettings(_connectionString));
-                connection.Open();
+                await connection.OpenAsync();
 
                 using var cmd = connection.CreateCommand();
                 cmd.CommandText = _table.Insert;
@@ -54,7 +55,7 @@ namespace Serilog.Sinks.ClickHouse.Provider
                     ParameterName = "bulk",
                     Value = buff
                 });
-                cmd.ExecuteNonQuery();
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
